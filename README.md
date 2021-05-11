@@ -1,4 +1,4 @@
-Ansible Role: postgres exporter
+Ansible Role: nginxlog exporter
 =========
 
 Deploy prometheus [nginxlog exporter](https://github.com/martin-helmich/prometheus-nginxlog-exporter) using ansible.
@@ -15,16 +15,13 @@ All variables which can be overridden are stored in [defaults/main.yml](defaults
 
 | Name           | Default Value | Description                        |
 | -------------- | ------------- | -----------------------------------|
-| `nginxlog_exporter_version` | 0.9.0 | Postgres exporter package version.|
+| `nginxlog_exporter_version` | 0.9.0 | nginxlog exporter package version.|
 | `nginxlog_exporter_install_dir` | "" | Allows to use local packages instead of ones distributed on github.|
-| `nginxlog_exporter_listen_adress` | "0.0.0.0" | Address on which postgres exporter will listen |
-| `nginxlog_exporter_listen_port` | 4040 | Port on which postgres exporter will listen |
-| `postgres_exporter_web_telemetry_path` | "metrics" | Path under which to expose metrics |
-| `postgres_exporter_db_ip` | "localhost" | IP Address of the postgres instance |
-| `postgres_exporter_db_port` | 5432 | Port of the postgres instance |
-| `postgres_exporter_db_password` | "" | Password of the postgres instance |
-| `postgres_exporter_system_user` | "postgres" | User for systemd service |
-| `postgres_exporter_system_group` | "postgres" | User for systemd service |
+| `nginxlog_exporter_listen_adress` | "0.0.0.0" | Address on which nginxlog exporter will listen |
+| `nginxlog_exporter_listen_port` | 4040 | Port on which nginxlog exporter will listen |
+| `nginxlog_exporter_metrics` | "metrics" | Path under which to expose metrics |
+| `nginxlog_exporter_system_user` | "nginx" | User for systemd service |
+| `nginxlog_exporter_system_group` | "nginx" | User for systemd service |
 
 
 Dependencies
@@ -39,7 +36,7 @@ Use it in a playbook as follows:
 ```yaml
 - hosts: all
   roles:
-    - puller23.postgres_exporter
+    - puller23.nginxlog_exporter
 ```
 
 License
