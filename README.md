@@ -1,6 +1,8 @@
 Ansible Role: nginxlog exporter
 =========
 
+[![CI](https://github.com/Puller23/ansible-role-nginxlog_exporter/actions/workflows/ci.yml/badge.svg)](https://github.com/Puller23/ansible-role-nginxlog_exporter/actions/workflows/ci.yml)
+
 Deploy prometheus [nginxlog exporter](https://github.com/martin-helmich/prometheus-nginxlog-exporter) using ansible.
 
 Requirements
