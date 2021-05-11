@@ -7,7 +7,7 @@ name: CI
       - master
 defaults:
   run:
-    working-directory: 'puller23.nginx_exporter'
+    working-directory: 'puller23.nginxlog_exporter'
 
 jobs:
 
@@ -18,7 +18,7 @@ jobs:
       - name: Check out the codebase.
         uses: actions/checkout@v2
         with:
-          path: 'puller23.nginx_exporter'
+          path: 'puller23.nginxlog_exporter'
 
       - name: Set up Python 3.
         uses: actions/setup-python@v2
@@ -39,7 +39,7 @@ jobs:
       - name: Check out the codebase
         uses: actions/checkout@v2
         with:
-          path: 'puller23.nginx_exporter'
+          path: 'puller23.nginxlog_exporter'
 
       - name: Set up Python3
         uses: actions/setup-python@v2
