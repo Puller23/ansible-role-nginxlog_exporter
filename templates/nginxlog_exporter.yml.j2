@@ -1,0 +1,11 @@
+{{ ansible_managed | comment }}
+listen:
+  port: {{ nginxlog_exporter_listen_port }}
+  address: "{{ nginxlog_exporter_listen_adress }}"
+  metrics_endpoint: "{{ nginxlog_exporter_metrics }}"
+
+
+{% if nginxlog_exporter_namespaces | length > 0 %}
+namespaces:
+    {{ nginxlog_exporter_namespaces|indent(4) }}
+{% endif %}

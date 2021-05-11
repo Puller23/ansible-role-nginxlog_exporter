@@ -1,0 +1,19 @@
+---
+nginxlog_exporter_version: 1.9.0
+nginxlog_exporter_install_dir: ""
+nginxlog_exporter_config_dir: "/opt/nginxlog_exporter"
+nginxlog_exporter_config_file: "nginxlog_exporter.yml"
+nginxlog_exporter_listen_adress: "0.0.0.0"
+nginxlog_exporter_metrics: "/metrics"
+nginxlog_exporter_listen_port: 4040
+
+nginxlog_exporter_config_template: "nginxlog_exporter.yml.j2"
+
+nginxlog_exporter_base_url: "https://github.com/martin-helmich/prometheus-nginxlog-exporter/releases/download"
+
+nginxlog_exporter_namespaces: |
+  # - name: app1
+  #   format: "$remote_addr - $remote_user [$time_local] \"$request\" $status $body_bytes_sent \"$http_referer\" \"$http_user_agent\" \"$http_x_forwarded_for\""
+  #   source:
+  #     files:
+  #       - /var/log/nginx/access.log

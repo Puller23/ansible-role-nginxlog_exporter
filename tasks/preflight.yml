@@ -1,0 +1,31 @@
+---
+- name: Assert the usage of systemd
+  assert:
+    that: ansible_service_mgr == 'systemd'
+    msg: "This role only works with systemd"
+
+- name: Check if nginxlog_exporter is installed
+  stat:
+    path: "{{ _nginxlog_exporter_binary }}"
+  register: _nginxlog_exporter_is_installed
+  check_mode: false
+
+
+- block:
+    - name: Get checksum
+      set_fact:
+        _checksums: "{{ lookup('url', '{{ nginxlog_exporter_base_url }}/v' + nginxlog_exporter_version + '/checksums.txt', wantlist=True) | list }}"
+      run_once: true
+    - debug: var=_checksums
+    - name: "Get checksum for {{ go_architecture }} architecture"
+      set_fact:
+        nginxlog_exporter_checksum: "{{ item.split(' ')[0] }}"
+      with_items: "{{ _checksums }}"
+      when:
+        - "('linux_' + go_architecture + '.tar.gz') in item"
+  delegate_to: localhost
+  when: nginxlog_exporter_install_dir | length == 0
+
+- debug: var=nginxlog_exporter_checksum
+- debug: 
+    msg: "'linux_' + go_architecture + '.tar.gz'"

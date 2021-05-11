@@ -1,0 +1,47 @@
+---
+- name: Create the nginxlog_exporter group
+  group:
+    name: "{{ nginxlog_exporter_system_group }}"
+    state: present
+    system: true
+  when: nginxlog_exporter_system_group != "root"
+
+- name: Create the nginxlog_exporter user
+  user:
+    name: "{{ nginxlog_exporter_system_user }}"
+    groups: "{{ nginxlog_exporter_system_group }}"
+    append: true
+    shell: /usr/sbin/nologin
+    create_home: false
+    home: /
+  when: nginxlog_exporter_system_user != "root"
+
+- block:
+    - name: Download nginxlog_exporter
+      become: false
+      get_url:
+        url: "{{ nginxlog_exporter_base_url }}/v{{ nginxlog_exporter_version }}/prometheus-nginxlog-exporter_{{ nginxlog_exporter_version }}_linux_{{ go_architecture }}.tar.gz"
+        dest: "/tmp/nginxlog_exporter-{{ nginxlog_exporter_version }}_linux-{{ go_architecture }}.tar.gz"
+        checksum: "sha256:{{ nginxlog_exporter_checksum }}"
+        mode: '0644'
+      register: _r_download_binary
+      until: _r_download_binary is succeeded
+      retries: 5
+      delay: 2
+      delegate_to: localhost
+
+    - name: Unarchive nginxlog_exporter
+      become: false
+      unarchive:
+        src: "/tmp/nginxlog_exporter-{{ nginxlog_exporter_version }}_linux-{{ go_architecture }}.tar.gz"
+        dest: "/tmp"
+        creates: "/tmp/prometheus-nginxlog-exporter"
+      delegate_to: localhost
+
+    - name: Propagate nginxlog_exporter
+      copy:
+        src: "/tmp/prometheus-nginxlog-exporter"
+        dest: "{{ _nginxlog_exporter_binary }}"
+        mode: 0755
+        owner: root
+        group: root

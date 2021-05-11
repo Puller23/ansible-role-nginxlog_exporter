@@ -1,0 +1,36 @@
+---
+- name: Copy the nginxlog_exporter systemd service file
+  template:
+    src: nginxlog_exporter.service.j2
+    dest: /etc/systemd/system/nginxlog_exporter.service
+    owner: root
+    group: root
+    mode: 0644
+  notify: restart nginxlog_exporter
+
+- block:
+    - name: Create nginxlog_exporter config dir
+      file:
+        path: "{{ nginxlog_exporter_config_dir }}"
+        state: directory
+        owner: "{{ nginxlog_exporter_system_user }}"
+        group: "{{ nginxlog_exporter_system_group }}"
+        mode: 0744
+      notify: restart nginxlog_exporter
+
+    - name: Copy the nginxlog_exporter config file
+      template:
+        src: "{{ nginxlog_exporter_config_template }}"
+        dest: "{{ nginxlog_exporter_config_dir }}/{{ nginxlog_exporter_config_file }}"
+        owner: "{{ nginxlog_exporter_system_user }}"
+        group: "{{ nginxlog_exporter_system_group }}"
+        mode: 0644
+      notify: restart nginxlog_exporter
+
+- name: Ensure nginxlog_exporter is enabled on boot
+  become: true
+  systemd:
+    daemon_reload: true
+    name: nginxlog_exporter
+    enabled: true
+    state: started
